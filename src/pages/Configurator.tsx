@@ -282,6 +282,20 @@ const Configurator = () => {
                     </div>
                   </div>
                 )}
+
+                {Object.values(selected).every(v => v !== null) && (
+                  <motion.button
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    disabled={issues.length > 0}
+                    className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    Započni sklapanje
+                  </motion.button>
+                )}
               </div>
             </div>
           </div>
