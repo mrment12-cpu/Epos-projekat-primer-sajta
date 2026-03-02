@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, MapPin, Tag, Clock, User, Filter, X, MessageCircle, Shield, ChevronRight } from "lucide-react";
+import { Search, MapPin, Clock, User, Filter, MessageCircle, Shield, ChevronRight } from "lucide-react";
 import Layout from "../components/Layout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  staggerContainerFast,
+  fadeUp,
+  fadeLeft,
+  fadeRight,
+  sectionHeading,
+  viewportOnce,
+} from "@/lib/animations";
 
 import imgGpu from "@/assets/marketplace-gpu.jpg";
 import imgCpu from "@/assets/marketplace-cpu.jpg";
@@ -14,27 +22,13 @@ import imgMotherboard from "@/assets/marketplace-motherboard.jpg";
 import imgCooler from "@/assets/marketplace-cooler.jpg";
 
 const categoryImages: Record<string, string> = {
-  GPU: imgGpu,
-  CPU: imgCpu,
-  RAM: imgRam,
-  Storage: imgStorage,
-  PSU: imgPsu,
-  Case: imgCase,
-  Motherboard: imgMotherboard,
-  Cooler: imgCooler,
+  GPU: imgGpu, CPU: imgCpu, RAM: imgRam, Storage: imgStorage,
+  PSU: imgPsu, Case: imgCase, Motherboard: imgMotherboard, Cooler: imgCooler,
 };
 
 interface Listing {
-  id: number;
-  title: string;
-  price: number;
-  location: string;
-  condition: string;
-  category: string;
-  seller: string;
-  timeAgo: string;
-  description: string;
-  specs: string[];
+  id: number; title: string; price: number; location: string; condition: string;
+  category: string; seller: string; timeAgo: string; description: string; specs: string[];
 }
 
 const listings: Listing[] = [
@@ -57,6 +51,8 @@ const conditionColor: Record<string, string> = {
   "Polovno": "text-warning bg-warning/10",
 };
 
+const cardVariant = (i: number) => (i % 3 === 0 ? fadeLeft : i % 3 === 2 ? fadeRight : fadeUp);
+
 const Marketplace = () => {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("Sve");
@@ -72,7 +68,13 @@ const Marketplace = () => {
     <Layout>
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+          <motion.div
+            variants={sectionHeading}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="text-center mb-10"
+          >
             <h1 className="text-3xl sm:text-4xl font-bold mb-4">
               <span className="text-gradient-primary">Marketplace</span>
             </h1>
@@ -82,7 +84,13 @@ const Marketplace = () => {
           </motion.div>
 
           {/* Search and filters */}
-          <div className="glass rounded-xl p-4 mb-6">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="glass rounded-xl p-4 mb-6"
+          >
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -114,53 +122,68 @@ const Marketplace = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Listings */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((item, i) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="glass glass-hover rounded-xl overflow-hidden cursor-pointer group"
-                onClick={() => setSelectedItem(item)}
-              >
-                <div className="h-40 bg-secondary overflow-hidden relative">
-                  <img
-                    src={categoryImages[item.category]}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-2 right-2 flex items-center gap-1 text-xs text-primary-foreground bg-primary/80 backdrop-blur-sm px-2 py-1 rounded-full">
-                    <ChevronRight className="w-3 h-3" /> Detalji
+          <motion.div
+            variants={staggerContainerFast}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            <AnimatePresence mode="popLayout">
+              {filtered.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  variants={cardVariant(i)}
+                  layout
+                  exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                  whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+                  className="glass glass-hover rounded-xl overflow-hidden cursor-pointer group"
+                  onClick={() => setSelectedItem(item)}
+                >
+                  <div className="h-40 bg-secondary overflow-hidden relative">
+                    <motion.img
+                      src={categoryImages[item.category]}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-2 right-2 flex items-center gap-1 text-xs text-primary-foreground bg-primary/80 backdrop-blur-sm px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ChevronRight className="w-3 h-3" /> Detalji
+                    </div>
                   </div>
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${conditionColor[item.condition] || "text-muted-foreground bg-muted"}`}>
-                      {item.condition}
-                    </span>
-                    <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">{item.category}</span>
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${conditionColor[item.condition] || "text-muted-foreground bg-muted"}`}>
+                        {item.condition}
+                      </span>
+                      <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">{item.category}</span>
+                    </div>
+                    <h3 className="font-semibold text-foreground text-sm mb-2 line-clamp-1">{item.title}</h3>
+                    <p className="text-lg font-bold text-gradient-primary">{item.price.toLocaleString("sr-RS")} RSD</p>
+                    <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{item.location}</span>
+                      <span className="flex items-center gap-1"><User className="w-3 h-3" />{item.seller}</span>
+                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{item.timeAgo}</span>
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-foreground text-sm mb-2 line-clamp-1">{item.title}</h3>
-                  <p className="text-lg font-bold text-gradient-primary">{item.price.toLocaleString("sr-RS")} RSD</p>
-                  <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{item.location}</span>
-                    <span className="flex items-center gap-1"><User className="w-3 h-3" />{item.seller}</span>
-                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{item.timeAgo}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
 
           {filtered.length === 0 && (
-            <div className="text-center py-16 text-muted-foreground">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-16 text-muted-foreground"
+            >
               <p>Nema rezultata za traženu pretragu.</p>
-            </div>
+            </motion.div>
           )}
         </div>
       </section>
@@ -171,23 +194,16 @@ const Marketplace = () => {
           {selectedItem && (
             <>
               <div className="relative h-56 sm:h-64">
-                <img
-                  src={categoryImages[selectedItem.category]}
-                  alt={selectedItem.title}
-                  className="w-full h-full object-cover"
-                />
+                <img src={categoryImages[selectedItem.category]} alt={selectedItem.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${conditionColor[selectedItem.condition]}`}>
-                      {selectedItem.condition}
-                    </span>
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${conditionColor[selectedItem.condition]}`}>{selectedItem.condition}</span>
                     <span className="text-xs text-muted-foreground bg-secondary/80 backdrop-blur-sm px-2 py-0.5 rounded-full">{selectedItem.category}</span>
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold text-foreground">{selectedItem.title}</h2>
                 </div>
               </div>
-
               <div className="p-5 space-y-5">
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-gradient-primary">{selectedItem.price.toLocaleString("sr-RS")} RSD</span>
@@ -196,23 +212,18 @@ const Marketplace = () => {
                     <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{selectedItem.timeAgo}</span>
                   </div>
                 </div>
-
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Opis</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{selectedItem.description}</p>
                 </div>
-
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Specifikacije</h3>
                   <div className="grid grid-cols-2 gap-2">
                     {selectedItem.specs.map((spec, i) => (
-                      <div key={i} className="bg-secondary/50 rounded-lg px-3 py-2 text-sm text-foreground">
-                        {spec}
-                      </div>
+                      <div key={i} className="bg-secondary/50 rounded-lg px-3 py-2 text-sm text-foreground">{spec}</div>
                     ))}
                   </div>
                 </div>
-
                 <div className="flex items-center gap-3 pt-2">
                   <div className="flex items-center gap-2 text-sm">
                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
