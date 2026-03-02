@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, AlertTriangle, ShoppingCart, Cpu, HardDrive, MonitorSpeaker, Fan, Battery, Box } from "lucide-react";
+import { Check, X, AlertTriangle, Wrench, Cpu, HardDrive, MonitorSpeaker, Fan, Battery, Box } from "lucide-react";
 import Layout from "../components/Layout";
 
 type Ecosystem = "intel" | "amd" | null;
@@ -114,6 +114,7 @@ function checkCompatibility(selected: Record<Category, Component | null>) {
 }
 
 const Configurator = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialEco = searchParams.get("eco") as Ecosystem;
   const [ecosystem, setEcosystem] = useState<Ecosystem>(initialEco);
@@ -290,9 +291,10 @@ const Configurator = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={issues.length > 0}
+                    onClick={() => navigate("/tutorials")}
                     className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    <ShoppingCart className="w-5 h-5" />
+                    <Wrench className="w-5 h-5" />
                     Započni sklapanje
                   </motion.button>
                 )}
