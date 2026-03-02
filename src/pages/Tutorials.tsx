@@ -4,6 +4,13 @@ import { Play, Clock, Star, Cpu, HardDrive, MonitorSpeaker, Cable, Fan, Wrench, 
 import Layout from "../components/Layout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+import tutorialCpu from "@/assets/tutorial-cpu.jpg";
+import tutorialRam from "@/assets/tutorial-ram.jpg";
+import tutorialGpu from "@/assets/tutorial-gpu.jpg";
+import tutorialCables from "@/assets/tutorial-cables.jpg";
+import tutorialCooling from "@/assets/tutorial-cooling.jpg";
+import tutorialFullbuild from "@/assets/tutorial-fullbuild.jpg";
+
 const tutorials = [
   {
     icon: Cpu,
@@ -13,6 +20,7 @@ const tutorials = [
     difficulty: "Početnik",
     views: "12.4k",
     videoSrc: "/videos/how-to-install-cpu.mp4",
+    image: tutorialCpu,
   },
   {
     icon: HardDrive,
@@ -22,6 +30,7 @@ const tutorials = [
     difficulty: "Početnik",
     views: "9.8k",
     videoSrc: "/videos/which-slots-ram.mp4",
+    image: tutorialRam,
   },
   {
     icon: MonitorSpeaker,
@@ -31,6 +40,7 @@ const tutorials = [
     difficulty: "Srednji",
     views: "15.2k",
     videoSrc: "/videos/gpu-installation.mp4",
+    image: tutorialGpu,
   },
   {
     icon: Cable,
@@ -40,6 +50,7 @@ const tutorials = [
     difficulty: "Napredni",
     views: "8.1k",
     videoSrc: "/videos/cable-management.mp4",
+    image: tutorialCables,
   },
   {
     icon: Fan,
@@ -49,6 +60,7 @@ const tutorials = [
     difficulty: "Srednji",
     views: "11.3k",
     videoSrc: "/videos/cooling-thermal-paste.mp4",
+    image: tutorialCooling,
   },
   {
     icon: Wrench,
@@ -58,6 +70,7 @@ const tutorials = [
     difficulty: "Svi nivoi",
     views: "22.7k",
     videoSrc: "/videos/complete-build.mp4",
+    image: tutorialFullbuild,
   },
 ];
 
@@ -98,10 +111,10 @@ const Tutorials = () => {
                   }
                 }}
               >
-                {/* Thumbnail placeholder */}
-                <div className="relative h-44 bg-secondary flex items-center justify-center overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/20" />
-                  <t.icon className="w-12 h-12 text-primary/40" />
+                {/* Thumbnail */}
+                <div className="relative h-44 bg-secondary overflow-hidden">
+                  <img src={t.image} alt={t.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-background/40 backdrop-blur-sm">
                     <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center glow-primary">
                       <Play className="w-6 h-6 text-primary-foreground ml-0.5" />
