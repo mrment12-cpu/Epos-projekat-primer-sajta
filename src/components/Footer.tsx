@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Monitor, Mail, MapPin, Phone } from "lucide-react";
+import { staggerContainer, fadeUp, fadeLeft, fadeRight, viewportOnce } from "@/lib/animations";
 
 const Footer = () => (
   <footer className="border-t border-border/50 bg-card/30">
-    <div className="container mx-auto px-4 py-12">
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+      className="container mx-auto px-4 py-12"
+    >
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="md:col-span-1">
+        <motion.div variants={fadeLeft} className="md:col-span-1">
           <Link to="/" className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
               <Monitor className="w-4 h-4 text-primary" />
@@ -15,9 +23,9 @@ const Footer = () => (
           <p className="text-sm text-muted-foreground leading-relaxed">
             Sve na jednom mestu — od odabira komponenata do sklapanja računara uz AI podršku.
           </p>
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div variants={fadeUp}>
           <h4 className="font-semibold text-foreground mb-3 text-sm">Navigacija</h4>
           <div className="flex flex-col gap-2">
             <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">Početna</Link>
@@ -25,31 +33,31 @@ const Footer = () => (
             <Link to="/tutorials" className="text-sm text-muted-foreground hover:text-primary transition-colors">Tutorijali</Link>
             <Link to="/marketplace" className="text-sm text-muted-foreground hover:text-primary transition-colors">Marketplace</Link>
           </div>
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div variants={fadeUp}>
           <h4 className="font-semibold text-foreground mb-3 text-sm">Podrška</h4>
           <div className="flex flex-col gap-2">
             <span className="text-sm text-muted-foreground">FAQ</span>
             <span className="text-sm text-muted-foreground">Uslovi korišćenja</span>
             <span className="text-sm text-muted-foreground">Politika privatnosti</span>
           </div>
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div variants={fadeRight}>
           <h4 className="font-semibold text-foreground mb-3 text-sm">Kontakt</h4>
           <div className="flex flex-col gap-2">
             <span className="text-sm text-muted-foreground flex items-center gap-2"><Mail className="w-3.5 h-3.5 text-primary" /> info@racunarskiservisi.rs</span>
             <span className="text-sm text-muted-foreground flex items-center gap-2"><Phone className="w-3.5 h-3.5 text-primary" /> +381 11 000 0000</span>
             <span className="text-sm text-muted-foreground flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-primary" /> Beograd, Srbija</span>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <div className="border-t border-border/50 mt-8 pt-6 text-center">
+      <motion.div variants={fadeUp} className="border-t border-border/50 mt-8 pt-6 text-center">
         <p className="text-xs text-muted-foreground">© 2026 Računarski Servisi. Sva prava zadržana.</p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   </footer>
 );
 
