@@ -30,6 +30,7 @@ const tutorials = [
     duration: "7 min",
     difficulty: "Srednji",
     views: "15.2k",
+    videoSrc: "/videos/gpu-installation.mp4",
   },
   {
     icon: Cable,
@@ -38,6 +39,7 @@ const tutorials = [
     duration: "12 min",
     difficulty: "Napredni",
     views: "8.1k",
+    videoSrc: "/videos/cable-management.mp4",
   },
   {
     icon: Fan,
@@ -46,6 +48,7 @@ const tutorials = [
     duration: "10 min",
     difficulty: "Srednji",
     views: "11.3k",
+    videoSrc: "/videos/cooling-thermal-paste.mp4",
   },
   {
     icon: Wrench,
@@ -54,6 +57,7 @@ const tutorials = [
     duration: "25 min",
     difficulty: "Svi nivoi",
     views: "22.7k",
+    videoSrc: "/videos/complete-build.mp4",
   },
 ];
 
